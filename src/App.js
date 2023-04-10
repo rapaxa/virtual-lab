@@ -1,10 +1,18 @@
+import React from 'react';
+import {Routes, Route} from "react-router-dom";
+import Articles from "./Pages/Articles";
+import Main from "./Components/Main";
+import ArticlesDetails from './Pages/ArticleDetails';
 
-function App() {
-  return (
-    <div className="App">
 
-    </div>
-  );
+const App = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<Main/>}>
+                <Route path='articles' element={<Articles/>}></Route>
+                <Route path="/articles/:id" element={<ArticlesDetails />} /></Route>
+        </Routes>
+    );
 }
 
 export default App;
