@@ -14,14 +14,6 @@ function Navigations() {
                         <LinkContainer to="articles">
                             <Nav.Link>Articles</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="photos">
-                            <Nav.Link>Photos</Nav.Link>
-                        </LinkContainer>
-                        <LinkContainer to="users">
-                            <Nav.Link>Users</Nav.Link>
-                        </LinkContainer>
-
-
                     </Nav>
                 </Container>
             </Navbar>

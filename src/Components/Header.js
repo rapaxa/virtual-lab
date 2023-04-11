@@ -5,7 +5,6 @@ const Header = () => {
     return (
         <div className="header d-flex flex-column  w-100">
             <Navigations/>
-
         </div>
     )
 }

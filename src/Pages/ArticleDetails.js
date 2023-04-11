@@ -10,13 +10,18 @@ const ArticleDetails = () => {
     const text = query.get("text");
 
     return (
-        <Col  className = "d-flex w-100" >
+        <Col className="d-flex w-100">
             <Card className="justify-content-center w-75 h-100">
                 <Card.Img variant="top" src={img} />
-                <Card.Body >
+                <Card.Body>
                     <Card.Title>{title}</Card.Title>
                     <Card.Text>{describe}</Card.Text>
                     <Card.Text>{text}</Card.Text>
+                    <hr />
+                    <Card.Title>Analysts Comment</Card.Title>
+                    <Card.Text>
+                        {/* Add the analyst's comment text here */}
+                    </Card.Text>
                 </Card.Body>
             </Card>
         </Col>
