@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import {collection, getDocs} from "firebase/firestore";
+import React, {useState, useEffect} from 'react';
+import {ref, onValue,} from "firebase/database";
 import {db} from "../firebase";
 import CardComponent from "./CardComponent";
 
 const CardList = () => {
-
     const [cards, setCards] = useState([]);
     useEffect(() => {
-        const todosRef = collection(db, "posts");
-        getDocs(todosRef).then((querySnapshot) => {
+        const reference = ref(db);
+        onValue(reference, (snapshot) => {
+            const data = snapshot.val();
             const posts = [];
-            querySnapshot.forEach((doc) => {
-                posts.push({id: doc.id, ...doc.data()});
-            });
-            setCards(posts);
+            for (let key in data) {
+                posts.push({id: key, ...data[key]});
 
+            }
+            setCards(posts);
         });
 
     }, []);
 
     return (
-        <div className="card-list d-flex justify-content-between">
+        <div className="card-list d-flex  flex-wrap justify-content-between">
             {cards.map((card, index) => (
-                <CardComponent key={index} {...card} />
-
-            ))}
+                <CardComponent key={index} {...card}/>
+            ))
+            }
         </div>
     );
 };
