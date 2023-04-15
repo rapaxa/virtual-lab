@@ -1,27 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import {ref, onValue,} from "firebase/database";
-import {db} from "../firebase";
+import React, {useEffect} from 'react';
 import CardComponent from "./CardComponent";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPosts} from "../firebase/firebaseAction";
 
 const CardList = () => {
-    const [cards, setCards] = useState([]);
+    const dispatch = useDispatch()
     useEffect(() => {
-        const reference = ref(db);
-        onValue(reference, (snapshot) => {
-            const data = snapshot.val();
-            const posts = [];
-            for (let key in data) {
-                posts.push({id: key, ...data[key]});
-
-            }
-            setCards(posts);
-        });
-
-    }, []);
-
+        dispatch(fetchPosts())
+    }, [dispatch])
+    const posts = useSelector((state) => state.posts.posts)
     return (
         <div className="card-list d-flex  flex-wrap justify-content-between">
-            {cards.map((card, index) => (
+            {posts.map((card, index) => (
                 <CardComponent key={index} {...card}/>
             ))
             }

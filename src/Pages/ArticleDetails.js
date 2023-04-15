@@ -1,49 +1,36 @@
-import React, {useEffect, useState} from "react";
-import {onValue, ref} from "firebase/database";
-import {db} from "../firebase";
+import React, {useEffect} from "react";
 import {Col} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import {useLocation} from "react-router";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useDispatch, useSelector} from "react-redux";
+import {fetchPosts} from "../firebase/firebaseAction";
 
 const ArticleDetails = () => {
     const {search} = useLocation();
     const query = new URLSearchParams(search);
-    const title = query.get("title");
-    const [post, setPost] = useState([]);
-    const filteredPost = post.filter((p) => p.title === title);
-
+    const idKey = query.get('key');
+    const dispatch = useDispatch()
     useEffect(() => {
-        const reference = ref(db);
-        onValue(reference, (snapshot) => {
-            const data = snapshot.val();
-            const posts = [];
-            for (let key in data) {
-                posts.push({id: key, ...data[key]});
-            }
-            setPost(posts); // Здесь мы исправляем ошибку: вместо setPost(...posts) должно быть setPost(posts)
-        });
-    }, []);
-
-
-            return (
-                <>
-                    {filteredPost.map((filteredPost, index) => (
-                        <Col key={index} className="d-flex w-100">
-                            <Card className="justify-content-center w-75 h-100">
-                                <Card.Img variant="top" src={filteredPost.imageUrl} />
-                                <Card.Body>
-                                    <Card.Title>{filteredPost.title}</Card.Title>
-                                    <Card.Text>{filteredPost.description}</Card.Text>
-                                    <hr />
-                                    <Card.Title className="my-3">Analysts Comment</Card.Title>
-                                    <Card.Text className="font-italic">{filteredPost.expertComment}</Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                </>
-            );
-    };
+        dispatch(fetchPosts())
+    }, [dispatch])
+    const posts = useSelector((state) => state.posts.posts)
+    return (
+        <div>
+            <Col key={idKey} className="d-flex w-100">
+                <Card className="justify-content-center w-75 h-100">
+                    <Card.Img variant="top" src={posts[idKey].imageUrl}/>
+                    <Card.Body>
+                        <Card.Title>{posts[idKey].title}</Card.Title>
+                        <Card.Text>{posts[idKey].description}</Card.Text>
+                        <hr/>
+                        <Card.Title className="my-3">Analysts Comment</Card.Title>
+                        <Card.Text className="font-italic">{posts[idKey].expertComment}</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </div>
+    );
+};
 
 export default ArticleDetails;
